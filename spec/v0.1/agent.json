@@ -1,0 +1,84 @@
+{
+  "acm_version": "0.1",
+
+  "business": {
+    "name": "Your Company",
+    "description": "Concise description for the agent to understand who you are",
+    "categories": ["your-category"],
+    "language": "en-US",
+    "currency": "USD"
+  },
+
+  "catalog": [{
+    "id": "product-001",
+    "name": "Product or service name",
+    "description": "What it is, who it is for, what is included",
+    "price": 100.00,
+    "unit": "per_unit",
+    "availability": "available",
+    "lead_time": "immediate",
+    "purchase_endpoint": "https://yourcompany.com/api/agent/order"
+  }],
+
+  "transaction": {
+    "methods": ["card", "transfer", "crypto"],
+    "endpoint": "https://yourcompany.com/api/agent/order",
+    "confirmation": "email + webhook",
+    "escrow": {
+      "enabled": false,
+      "release_condition": null,
+      "smart_contract": null
+    }
+  },
+
+  "loyalty": {
+    "program": false,
+    "collateral": null
+  },
+
+  "subscriptions": {
+    "available": false,
+    "plans": []
+  },
+
+  "volume_commitments": {
+    "available": false,
+    "tiers": []
+  },
+
+  "micropayments": {
+    "available": false,
+    "models": [],
+    "payment_channel": null
+  },
+
+  "access_control": {
+    "nft_membership": {
+      "enabled": false,
+      "contract": null,
+      "chain": null,
+      "benefit": null
+    }
+  },
+
+  "conditional_payments": {
+    "available": false,
+    "conditions": [],
+    "oracle": null
+  },
+
+  "collective_buying": {
+    "dao_enabled": false,
+    "min_agents": null,
+    "group_discount": null,
+    "coordination_contract": null,
+    "window_hours": null
+  },
+
+  "contact": {
+    "agent_support": "agents@yourcompany.com",
+    "human_support": "hello@yourcompany.com"
+  },
+
+  "agent_instructions": "Describe any special instructions for agents interacting with your business."
+}
