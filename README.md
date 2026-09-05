@@ -230,3 +230,87 @@ MIT — free to use, implement and extend.
 ---
 
 *ACM is proposed and maintained by [No GUI](https://no-gui.com) — the consultancy preparing brands for the agent economy.*
+
+---
+
+## GS1 Digital Link Compatibility
+
+ACM is designed to be the agent layer on top of **GS1 Digital Link** — the successor to the traditional barcode, becoming a global standard in 2027.
+
+### What is GS1 Digital Link?
+
+GS1 Digital Link replaces the traditional barcode number with a URL. That URL carries structured product data: origin, ingredients, certifications, supply chain history, batch tracking, and more. It is the standard used by Walmart, Amazon, and every major retailer globally.
+
+### The gap GS1 leaves
+
+GS1 Digital Link was designed for human-facing web pages — a URL that opens a product page with information for consumers. It was not designed for agent commerce: agents cannot transact, compare, or reason from a product page.
+
+### ACM fills that gap
+
+ACM is the agent-readable layer on top of GS1 Digital Link. The **GS1 → ACM Translator** converts GS1 product data into an executable ACM that agents can reason about and transact with.
+
+```
+Physical product barcode scan
+  → GS1 Digital Link (product data URL)
+  → GS1 → ACM Translator
+  → ACM of the product (agent-executable):
+    {
+      "entity_type": "physical_product",
+      "gs1_gtin": "00012345678905",
+      "gs1_link": "https://id.gs1.org/01/00012345678905",
+      "origin": { "country": "Mexico", "region": "Guanajuato", "producer": "Rancho El Fresón" },
+      "certifications": ["USDA Organic", "Fair Trade"],
+      "harvest_date": "2026-09-03",
+      "cold_chain": { "verified": true, "checkpoints": 3 },
+      "purchase_endpoint": "https://supplier.com/api/agent/order"
+    }
+  → Agent verifies, purchases, logs
+```
+
+### Mapping table: GS1 → ACM
+
+| GS1 Field | ACM Field | Notes |
+|---|---|---|
+| GTIN | `catalog[].id` | Global Trade Item Number |
+| GLN | `business.location_id` | Global Location Number |
+| Batch/Lot | `catalog[].batch` | Traceability |
+| Best Before | `catalog[].expiry` | ISO 8601 date |
+| Country of Origin | `business.origin.country` | |
+| Certifications | `catalog[].certifications` | Array of strings |
+| Digital Link URL | `catalog[].gs1_link` | Source of truth link |
+
+### ACM fields added for physical products
+
+```json
+{
+  "entity_type": "physical_product",
+  "gs1_gtin": "string — Global Trade Item Number",
+  "gs1_link": "string — GS1 Digital Link URL",
+  "origin": {
+    "country": "string",
+    "region": "string",
+    "producer": "string",
+    "coordinates": "optional lat/long"
+  },
+  "certifications": ["array of certification strings"],
+  "batch": "string — lot or batch number",
+  "harvest_date": "ISO 8601 date — for perishables",
+  "expiry": "ISO 8601 date",
+  "cold_chain": {
+    "required": "boolean",
+    "verified": "boolean",
+    "checkpoints": "integer"
+  }
+}
+```
+
+### Roadmap
+
+- **ACM v0.1** (now) — digital services and businesses
+- **ACM v0.2** — physical products with GS1 Digital Link mapping
+- **ACM v1.0** — full supply chain: raw materials → manufacturer → distributor → retailer → consumer
+
+### Why this matters
+
+Every physical product in the world is going to have a GS1 Digital Link by 2027. Each of those products will need an agent-readable representation. ACM is the standard that makes that possible — and the GS1 → ACM Translator is the bridge between the physical supply chain and the agent economy.
+
